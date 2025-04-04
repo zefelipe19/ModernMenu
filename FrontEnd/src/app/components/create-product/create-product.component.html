@@ -1,0 +1,23 @@
+<div class="d-flex flex-column align-items-center">
+    <h3>Novo Produto</h3>
+    <form class="form d-fex flex-column align-items-center">
+        <div class="row p-2">
+            <div class="col-5">
+                <label class="form-label" for="productName">Nome</label>
+                <input class="form-control" type="text" name="productName" id="productName" placeholder="Bife Acebolado">
+            </div>
+            <div class="col-4">
+                <label class="form-label" for="productPrice">Valor</label>
+                <input class="form-control" type="number" name="productPrice" id="productPrice" placeholder="25,90">
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="productType">Tipo</label>
+                <select class="form-control" name="productType" id="productType">
+                    <option value="UNI">Unidade</option>
+                    <option value="KG">Quilo</option>
+                </select>
+            </div>
+        </div>
+        <input type="submit" class="btn btn-primary col-12" value="Criar">
+    </form>
+</div>

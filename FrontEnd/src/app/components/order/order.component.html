@@ -1,0 +1,10 @@
+<div class="container">
+    <h4>{{name}}</h4>
+    @for(product of products; track product.id) {
+        <div>
+            {{product.name}}
+            {{product.price}}
+        </div>
+    }
+    <p>Total {{totalValue}}</p>
+</div>

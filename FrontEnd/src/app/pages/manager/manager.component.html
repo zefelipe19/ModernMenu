@@ -1,0 +1,35 @@
+<div class="d-flex flex-column aling-items-center gap-2">
+    @if (!newProductVisible) {
+        <button class="btn btn-primary" (click)="newProductToggler()">Novo Produto</button>
+    }
+    @if (newProductVisible) {
+        <div class="container p-2 d-flex flex-column gap-2 align-items-center mb-5 border rounded border-primary">
+            <app-create-product></app-create-product>
+            <button class="btn btn-danger col-12" (click)="newProductToggler()">Cancelar</button>
+        </div>
+    }
+
+    @if(!productsVisible) {    
+        <button class="btn btn-info text-light" (click)="productsVisibleToggler()">Ver Produtos</button>
+    }@else if (productsVisible) {
+        <button class="btn btn-info text-light" (click)="productsVisibleToggler()">Esconder Produtos</button>
+    }
+    @if (productsVisible) {
+        <div>
+            <h4>Todos os produtos</h4>
+            <div class="container p-2 d-flex flex-column gap-2">
+                @for (product of products; track product) {
+                    <app-product-management></app-product-management>
+                }
+            </div>
+        </div>
+    }
+    @if(!ordersVisible) {    
+        <button class="btn btn-success text-light" (click)="ordersVisibleToggler()">Ver Mesas</button>
+    }@else if (ordersVisible) {
+        <button class="btn btn-success text-light" (click)="ordersVisibleToggler()">Esconder Mesas</button>
+        @for (order of orders; track order) {
+            <app-order></app-order>
+        }
+    }
+</div>

@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{name}} | R$ {{price}}</h5>
+        @if (!editable) {
+            <span>
+                <button class="btn btn-primary" (click)="edit()">Editar</button>
+            </span>
+        } @else if (editable) {
+            <div class="d-flex flex-column gap-2 m-1 rounded">
+                <form class="form d-fex flex-column align-items-center">
+                    <div class="row p-2">
+                        <div class="col-12">
+                            <label class="form-label" for="productName">Nome</label>
+                            <input class="form-control" type="text" name="productName" id="productName" value="{{name}}" [ngModel]="name">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="productPrice">Valor</label>
+                            <input class="form-control" type="number" name="productPrice" id="productPrice" value="{{price}}" [ngModel]="price">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="productType">Tipo</label>
+                            <select class="form-control" name="productType" id="productType">
+                                <option value="UNI">Unidade</option>
+                                <option value="KG">Quilo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary col-12" value="Editar">
+                </form>
+                <input class="btn btn-danger col-12" type="button" name="cancel" id="cancel" value="Cancelar" (click)="edit()">
+            </div>
+        }
+    </div>
+</div>
