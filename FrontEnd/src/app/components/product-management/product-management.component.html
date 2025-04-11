@@ -3,36 +3,57 @@
         <h5 class="card-title">{{name}} | R$ {{price.toFixed(2)}}</h5>
         @if (!productEditable) {
             <span>
-                <button class="btn btn-primary" (click)="productEditibaleToggler()">Editar</button>
+                <button class="btn btn-primary m-1" (click)="productEditibaleToggler()">Editar</button>
+            </span>
+            <span>
+                <button class="btn btn-danger" data-bs-toggle="modal" [attr.data-bs-target]="'#' + id + 'modal'">Deletar</button>
             </span>
         } @else if (productEditable) {
             <div class="d-flex flex-column gap-2 m-1 rounded">
-                <form class="form d-fex flex-column align-items-center">
+                <form class="form d-fex flex-column align-items-center" [formGroup]="saveProductForm">
                     <div class="row p-2">
                         <div class="col-12">
                             <label class="form-label" for="productName">Nome</label>
-                            <input class="form-control" type="text" name="productName" id="productName" value="{{name}}" [ngModel]="name">
+                            <input class="form-control" type="text" name="productName" id="productName" formControlName="name">
                         </div>
                         <div class="col-6">
                             <label class="form-label" for="productPrice">Valor</label>
-                            <input class="form-control" type="number" name="productPrice" id="productPrice" value="{{price}}" [ngModel]="price">
+                            <input class="form-control" type="number" name="productPrice" id="productPrice" formControlName="price">
                         </div>
                         <div class="col-6">
                             <label class="form-label" for="productType">Tipo</label>
-                            <select class="form-control" name="productType" id="productType" [value]="type">
+                            <select class="form-control" name="productType" id="productType" formControlName="type">
                                 <option value="UNI">Unidade</option>
                                 <option value="KG">Quilo</option>
                             </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="productBarCode"> Código de Barras</label>
-                            <input class="form-control" type="number" name="productBarCode" id="productBarCode" [ngModel]="barCode">
+                            <input class="form-control" type="number" name="productBarCode" id="productBarCode" formControlName="barCode">
                         </div>
                     </div>
-                    <input type="submit" class="btn btn-primary col-12" value="Editar">
+                    <input type="submit" class="btn btn-primary col-12" (click)="saveProduct(id); productEditibaleToggler()"  value="Salvar">
                 </form>
                 <input class="btn btn-danger col-12" type="button" name="cancel" id="cancel" value="Cancelar" (click)="productEditibaleToggler()">
             </div>
         }
+    </div>
+</div>
+<div class="modal fade" id="{{id}}modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="fs-4 text-danger">Cuidado</h4>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Você esta prestes a deletar o item <strong>{{name}}</strong>.</p>
+                <p>Essa ação não poderá ser revertida, tem certeza de que deseja fazer isso?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-success" data-bs-dismiss="modal">Não, voltar.</button>
+                <button class="btn btn-danger" data-bs-dismiss="modal" (click)="deleteProduct(id)">Sim</button>
+            </div>
+        </div>
     </div>
 </div>

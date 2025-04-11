@@ -67,4 +67,14 @@ export class ProductService {
     const newProduct = { id: crypto.randomUUID(), ...product };
     this.products.push(newProduct);
   }
+
+  saveProduct(product: ProductInterface) {
+    const productIndex = this.products.findIndex((p) => p.id == product.id);
+    this.products[productIndex] = product;
+  }
+
+  deleteProduct(id: string) {
+    const productIndex = this.products.findIndex((p) => p.id == id);
+    this.products.splice(productIndex, 1);
+  }
 }
