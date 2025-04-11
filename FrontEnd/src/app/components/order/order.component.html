@@ -1,10 +1,55 @@
-<div class="container">
-    <h4>{{name}}</h4>
-    @for(product of products; track product.id) {
-        <div>
-            {{product.name}}
-            {{product.price}}
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#' + orderId + 'ModalOrder'">
+  {{name}} <br> R$ {{totalValue}}
+</button>
+  
+<!-- Modal -->
+<div class="modal fade" id="{{orderId}}ModalOrder" tabindex="-1" [attr.aria-labelledby]="orderId+'ModalLabel'" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="{{orderId}}ModalLabel">{{name}} </h1>
+        <span class="fs-6">Total R$ {{totalValue}}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <h4>Adicionar Produtos</h4>
+          <form class="form d-flex flex-column align-items-center">
+            <div class="row gap-2">
+              <div class="col-7">
+                <label class="form-label" for="productName">Produto</label>
+                <select class="form-control" name="productName" id="productName" [formControl]="formProductId">
+                  <option value="0" selected>Selecione</option>
+                  @for (product of productsMenu; track product.id) {
+                    <option value="{{product.id}}">{{product.name}}</option>
+                  }
+                </select>
+              </div>
+              <div class="col-4">
+                <label class="form-label" for="prodcutQtd">Quantidade</label>
+                <input class="form-control" type="number" name="prodcutQtd" id="prodcutQtd" [formControl]="formProductQtd">
+              </div>
+            </div>
+            <input class="btn btn-primary col-12 mt-2" type="button" value="Adicionar" (click)="addProduct()">
+          </form>
         </div>
-    }
-    <p>Total {{totalValue}}</p>
+        <hr>
+        <div class="d-flex flex-column gap-2">
+          @for(product of products; track product.id) {
+            <div class="container d-flex">
+              <span class="flex-grow-1 text-wrap">
+                {{product.name}} x {{product.qtd}}
+              </span>
+              <button class="btn btn-danger btn-sm" (click)="reduceProductQuantity(product.id)" (dblclick)="removeProduct(product.id)">Remover</button>
+            </div>
+          }
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="returnHistory()">Cancelar</button>
+          <button type="button" class="btn btn-success" (click)="saveProductOrder()" data-bs-dismiss="modal">Save Alterações</button>
+      </div>
+    </div>
+  </div>
 </div>

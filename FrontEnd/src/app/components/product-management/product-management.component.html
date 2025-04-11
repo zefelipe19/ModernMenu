@@ -1,11 +1,11 @@
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">{{name}} | R$ {{price}}</h5>
-        @if (!editable) {
+        <h5 class="card-title">{{name}} | R$ {{price.toFixed(2)}}</h5>
+        @if (!productEditable) {
             <span>
-                <button class="btn btn-primary" (click)="edit()">Editar</button>
+                <button class="btn btn-primary" (click)="productEditibaleToggler()">Editar</button>
             </span>
-        } @else if (editable) {
+        } @else if (productEditable) {
             <div class="d-flex flex-column gap-2 m-1 rounded">
                 <form class="form d-fex flex-column align-items-center">
                     <div class="row p-2">
@@ -19,15 +19,19 @@
                         </div>
                         <div class="col-6">
                             <label class="form-label" for="productType">Tipo</label>
-                            <select class="form-control" name="productType" id="productType">
+                            <select class="form-control" name="productType" id="productType" [value]="type">
                                 <option value="UNI">Unidade</option>
                                 <option value="KG">Quilo</option>
                             </select>
                         </div>
+                        <div class="col-12">
+                            <label class="form-label" for="productBarCode"> Código de Barras</label>
+                            <input class="form-control" type="number" name="productBarCode" id="productBarCode" [ngModel]="barCode">
+                        </div>
                     </div>
                     <input type="submit" class="btn btn-primary col-12" value="Editar">
                 </form>
-                <input class="btn btn-danger col-12" type="button" name="cancel" id="cancel" value="Cancelar" (click)="edit()">
+                <input class="btn btn-danger col-12" type="button" name="cancel" id="cancel" value="Cancelar" (click)="productEditibaleToggler()">
             </div>
         }
     </div>

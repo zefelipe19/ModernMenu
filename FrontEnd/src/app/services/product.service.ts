@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ProductInterface,
-  ProductOrderInterface,
-} from '../types/productInterface';
+import { ProductInterface, NewProductInterface } from '../types/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -66,38 +63,8 @@ export class ProductService {
     return this.products;
   }
 
-  getProductsOrder(): ProductOrderInterface[] {
-    let productOrders = [
-      {
-        id: 'efc37f7d-4299-48da-a01b-2b768bd778ad',
-        name: 'Produto 05',
-        price: 58.25,
-        type: 'UNI',
-        qtd: 5,
-      },
-      {
-        id: '758f3252-1c33-4a1d-ae46-608f63c9678f',
-        name: 'Produto 06',
-        price: 10.95,
-        type: 'KG',
-        qtd: 2,
-      },
-      {
-        id: 'f482fca9-a684-4803-99e2-7600bff419b0',
-        name: 'Produto 07',
-        price: 100,
-        type: 'UNI',
-        qtd: 4,
-      },
-    ];
-    return productOrders;
-  }
-
-  getAllOrders() {
-    let orders = [
-      { id: 1, name: 'Mesa 01', products: this.getProductsOrder() },
-      { id: 2, name: 'Mesa 02', products: this.getProductsOrder() },
-    ];
-    return orders;
+  createProduct(product: NewProductInterface): void {
+    const newProduct = { id: crypto.randomUUID(), ...product };
+    this.products.push(newProduct);
   }
 }

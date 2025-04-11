@@ -1,0 +1,25 @@
+<button class="btn btn-outline-primary col-12" data-bs-toggle="modal" data-bs-target="#newOrderModal">Nova Mesa</button>
+
+<div class="modal fade" id="newOrderModal" aria-hidden="true" aria-labelledby="newOrderModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="fs-5">Nova Mesa</h1>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form">
+                    <label class="form-label" for="orderName">Nome da Mesa</label>
+                    <input class="form-control" type="text" name="orderName" id="orderName" placeholder="Ex: Mesa 01" [formControl]="orderName">
+                    @if (orderName.hasError('minlength')) {
+                        <div class="text-danger">O nome da mesa precisa ter ao menos dois (2) caracteres!</div>
+                    }
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button class="btn btn-primary" (click)="createOrder()">Criar</button>
+            </div>
+        </div>
+    </div>
+</div>
