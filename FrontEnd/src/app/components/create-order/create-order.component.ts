@@ -18,7 +18,10 @@ export class CreateOrderComponent {
     if (this.orderName.value!.length < 2) {
       window.alert('Não foi possível salvar a mesa!');
     } else {
-      await this.orderService.createOrder({ name: this.orderName.value! });
+      await this.orderService.createOrder({
+        name: this.orderName.value!,
+        createdAt: new Date().toISOString(),
+      });
       this.orderName.setValue('');
     }
   };

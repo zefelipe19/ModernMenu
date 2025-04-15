@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  ClosedOrderInterface,
   NewOrderInterface,
   OrderInterface,
   ProductOrderInterface,
@@ -12,42 +13,30 @@ export class OrderService {
   constructor() {}
 
   orders = [
-    { id: 1, name: 'Mesa 01', products: this.getProductsOrder() },
-    { id: 2, name: 'Mesa 02', products: this.getProductsOrder() },
+    {
+      id: 1,
+      name: 'Mesa 01',
+      products: this.getProductsOrder(),
+      totalValue: 0,
+      createdAt: '2025-04-14T15:15:48.687Z',
+    },
+    {
+      id: 2,
+      name: 'Mesa 02',
+      products: this.getProductsOrder(),
+      totalValue: 0,
+      createdAt: '2025-04-15T15:15:48.687Z',
+    },
   ];
 
   createOrder(order: NewOrderInterface) {
     let idOrder = this.orders.length + 1;
-    const newOrder = { ...order, products: [], id: idOrder };
-    console.log(newOrder);
+    const newOrder = { ...order, products: [], id: idOrder, totalValue: 0 };
     this.orders.push(newOrder);
-    console.log(this.orders);
   }
 
   getProductsOrder(): ProductOrderInterface[] {
-    let productOrders = [
-      {
-        id: 'efc37f7d-4299-48da-a01b-2b768bd778ad',
-        name: 'Produto 05',
-        price: 58.25,
-        type: 'UNI',
-        qtd: 5,
-      },
-      {
-        id: '758f3252-1c33-4a1d-ae46-608f63c9678f',
-        name: 'Produto 06',
-        price: 10.95,
-        type: 'KG',
-        qtd: 2,
-      },
-      {
-        id: 'f482fca9-a684-4803-99e2-7600bff419b0',
-        name: 'Produto 07',
-        price: 100,
-        type: 'UNI',
-        qtd: 4,
-      },
-    ];
+    let productOrders: ProductOrderInterface[] = [];
     return productOrders;
   }
 
@@ -58,5 +47,27 @@ export class OrderService {
   saveOrder(order: OrderInterface) {
     const orderIndex = this.orders.findIndex((o) => o.id == order.id);
     this.orders[orderIndex] = order;
+  }
+
+  closeOrder(order: ClosedOrderInterface) {
+    if (!localStorage.getItem('closedOrders')) {
+      localStorage.setItem('closedOrders', JSON.stringify([]));
+    }
+    const closedOrders = JSON.parse(localStorage.getItem('closedOrders')!);
+
+    closedOrders.push(order);
+    localStorage.setItem('closedOrders', JSON.stringify(closedOrders));
+    const orderIndex = this.orders.findIndex((o) => o.id == order.id);
+    this.orders.splice(orderIndex, 1);
+    console.log(localStorage.getItem('closedOrders'));
+  }
+
+  getClosedOrders(): ClosedOrderInterface[] {
+    if (localStorage.getItem('closedOrders')) {
+      const closedOrders = JSON.parse(localStorage.getItem('closedOrders')!);
+      console.log(closedOrders);
+      return closedOrders;
+    }
+    return [];
   }
 }

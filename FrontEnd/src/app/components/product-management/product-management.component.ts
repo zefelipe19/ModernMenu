@@ -50,6 +50,7 @@ export class ProductManagementComponent implements OnInit {
       ...this.saveProductForm.value,
     };
     this.productService.saveProduct(saveProduct);
+    this.productService.saveLocalProductMenu();
   }
 
   deleteProduct(id: string) {

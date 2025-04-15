@@ -1,28 +1,39 @@
-<div class="d-flex flex-column align-items-center text-light">
-    <h3>Novo Produto</h3>
-    <form class="form d-fex flex-column align-items-center" [formGroup]="productForm">
-        <div class="row p-2">
-            <div class="col-12">
-                <label class="form-label" for="productName">Nome</label>
-                <input class="form-control" type="text" name="productName" id="productName" placeholder="Ex: Bife Acebolado" formControlName="name">
+
+@if (!newProductVisible) {
+    <button class="btn btn-primary shadow-lg col-12 mb-2" (click)="newProductToggler()">Novo Produto</button>
+}
+<div class="d-flex flex-column align-items-center gap-2">
+    @if (newProductVisible) {
+        <div class="container p-2 d-flex flex-column gap-2 align-items-center mb-5 border rounded border-primary shadow-lg bg-primary-subtle">
+            <div class="d-flex flex-column align-items-center text-light">
+                <h3>Novo Produto</h3>
+                <form class="form d-fex flex-column align-items-center" [formGroup]="productForm">
+                    <div class="row p-2">
+                        <div class="col-12">
+                            <label class="form-label" for="productName">Nome</label>
+                            <input class="form-control" type="text" name="productName" id="productName" placeholder="Ex: Bife Acebolado" formControlName="name">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="productPrice">Valor</label>
+                            <input class="form-control" type="number" name="productPrice" id="productPrice" ngModel placeholder="Ex: 25,90" formControlName="price">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="productType">Tipo</label>
+                            <select class="form-control" name="productType" id="productType" formControlName="type">
+                                <option value="">Selecione</option>
+                                <option value="UNI">Unidade</option>
+                                <option value="KG">Quilo</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="productBarCode"> Código de Barras</label>
+                            <input class="form-control" type="number" name="productBarCode" id="productBarCode" ngModel placeholder="Ex: 78936683" formControlName="barCode">
+                        </div>
+                    </div>
+                    <input type="submit" class="btn btn-primary col-12" value="Criar" (click)="createProduct()">
+                </form>
             </div>
-            <div class="col-6">
-                <label class="form-label" for="productPrice">Valor</label>
-                <input class="form-control" type="number" name="productPrice" id="productPrice" ngModel placeholder="Ex: 25,90" formControlName="price">
-            </div>
-            <div class="col-6">
-                <label class="form-label" for="productType">Tipo</label>
-                <select class="form-control" name="productType" id="productType" formControlName="type">
-                    <option value="">Selecione</option>
-                    <option value="UNI">Unidade</option>
-                    <option value="KG">Quilo</option>
-                </select>
-            </div>
-            <div class="col-12">
-                <label class="form-label" for="productBarCode"> Código de Barras</label>
-                <input class="form-control" type="number" name="productBarCode" id="productBarCode" ngModel placeholder="Ex: 78936683" formControlName="barCode">
-            </div>
+            <button class="btn btn-danger col-12" (click)="newProductToggler()">Cancelar</button>
         </div>
-        <input type="submit" class="btn btn-primary col-12" value="Criar" (click)="createProduct()">
-    </form>
+    }
 </div>

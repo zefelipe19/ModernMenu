@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   count = Array(5);
   ngOnInit() {
     this.allProducts = this.productService.getAllProducts();
-    localStorage.setItem('menu', JSON.stringify(this.allProducts));
+    this.productService.saveLocalProductMenu();
   }
   constructor(private readonly productService: ProductService) {}
 

@@ -15,18 +15,28 @@ export interface NewProductInterface {
 
 export interface ProductOrderInterface {
   id: string;
+  productId: string;
   name: string;
   price: number;
   type: string;
   qtd: number;
+  weight?: number;
+  totalPrice?: number;
 }
 
 export interface OrderInterface {
   id: number;
   name: string;
   products: ProductOrderInterface[];
+  totalValue: number;
+  createdAt: string;
 }
 
 export interface NewOrderInterface {
   name: string;
+  createdAt: string;
+}
+
+export interface ClosedOrderInterface extends OrderInterface {
+  closedAt: string;
 }

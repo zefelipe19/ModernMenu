@@ -12,19 +12,29 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 export class CreateProductComponent {
   constructor(private readonly productService: ProductService) {}
 
+  newProductVisible = false;
+
   productForm: FormGroup = new FormGroup({
-    name: new FormControl<string>(''),
-    price: new FormControl<number>(0),
-    type: new FormControl<string>(''),
-    barCode: new FormControl<number>(0),
+    name: new FormControl<string>('', { nonNullable: true }),
+    price: new FormControl<number>(0, { nonNullable: true }),
+    type: new FormControl<string>('', { nonNullable: true }),
+    barCode: new FormControl<number>(0, { nonNullable: true }),
   });
 
-  createProduct() {
+  newProductToggler(): void {
+    this.newProductVisible = !this.newProductVisible;
+  }
+
+  async createProduct(): Promise<void> {
     const product: NewProductInterface = this.productForm.value;
     if (!product.name || !product.type || !product.price) {
       window.alert('Existem campos que não foram preenchidos.');
     } else {
-      this.productService.createProduct(product);
+      await this.productService.createProduct(product);
+      this.productService.saveLocalProductMenu();
+      window.alert('Produto criado com sucesso.');
+      this.productForm.reset();
+      this.newProductToggler();
     }
   }
 }

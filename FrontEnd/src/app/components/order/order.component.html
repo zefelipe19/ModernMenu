@@ -1,25 +1,28 @@
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#' + orderId + 'ModalOrder'">
+<!-- Order Modal Button -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" [attr.data-bs-target]="'#' + orderId + 'ModalOrder'" (click)="getProductsMenu()">
   {{name}} <br> R$ {{totalValue}}
 </button>
   
-<!-- Modal -->
+<!-- Order Modal -->
 <div class="modal fade" id="{{orderId}}ModalOrder" tabindex="-1" [attr.aria-labelledby]="orderId+'ModalLabel'" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="{{orderId}}ModalLabel">{{name}} </h1>
-        <span class="fs-6">Total R$ {{totalValue}}</span>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header gap-2">
+        <div>
+          <h1 class="modal-title fs-3" id="{{orderId}}ModalLabel">{{name}} </h1>
+          <p>Criada em {{getCreatedAt()}}</p>
+          <span class="fs-5">Total R$ {{totalValue}}</span>
+        </div>
+        <button type="button" class="btn-close align-self-start" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="container">
           <h4>Adicionar Produtos</h4>
-          <form class="form d-flex flex-column align-items-center">
+          <form class="form d-flex flex-column align-items-center" [formGroup]="formProductGroup" (submit)="addProduct()">
             <div class="row gap-2">
               <div class="col-7">
                 <label class="form-label" for="productName">Produto</label>
-                <select class="form-control" name="productName" id="productName" [formControl]="formProductId">
+                <select class="form-control" name="productName" id="productName" formControlName="formProductId" (change)="verifyProductType()">
                   <option value="0" selected>Selecione</option>
                   @for (product of productsMenu; track product.id) {
                     <option value="{{product.id}}">{{product.name}}</option>
@@ -28,27 +31,78 @@
               </div>
               <div class="col-4">
                 <label class="form-label" for="prodcutQtd">Quantidade</label>
-                <input class="form-control" type="number" name="prodcutQtd" id="prodcutQtd" [formControl]="formProductQtd">
+                <input class="form-control" type="number" name="prodcutQtd" id="prodcutQtd" formControlName="formProductQtd">
               </div>
+              @if(formProductGroup.get('formProductWeight')){
+                <div class="col-12">
+                  <label class="form-label" for="productWeight">Peso em G</label>
+                  <input class="form-control" type="number" name="productWeight" id="productWeight" formControlName="formProductWeight"
+                  ngModel placeholder="Ex: 253">
+                </div>
+              }
             </div>
-            <input class="btn btn-primary col-12 mt-2" type="button" value="Adicionar" (click)="addProduct()">
+            <input class="btn btn-primary col-12 mt-2" type="submit" value="Adicionar">
           </form>
         </div>
         <hr>
         <div class="d-flex flex-column gap-2">
           @for(product of products; track product.id) {
             <div class="container d-flex">
-              <span class="flex-grow-1 text-wrap">
-                {{product.name}} x {{product.qtd}}
-              </span>
+              @if (product.weight) {
+                <span class="flex-grow-1 text-wrap">
+                  {{product.name}} | {{product.weight}}G x {{product.qtd}} <br> R$ {{product.totalPrice?.toFixed(2)}}
+                </span>
+              } @else {
+                <span class="flex-grow-1 text-wrap">
+                  {{product.name}} x {{product.qtd}} <br> R$ {{(product.price * product.qtd).toFixed(2)}}
+                </span>
+              }
               <button class="btn btn-danger btn-sm" (click)="reduceProductQuantity(product.id)" (dblclick)="removeProduct(product.id)">Remover</button>
             </div>
           }
         </div>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="returnHistory()">Cancelar</button>
+        @if (products.length) {
+          <button type="button" class="btn btn-warning" data-bs-toggle="modal" [attr.data-bs-target]="'#'+orderId+'ModalCloseOrder'">Fechar Mesa</button>
+        }
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="returnHistory(); clearFromProductGoup()">Cancelar</button>
           <button type="button" class="btn btn-success" (click)="saveProductOrder()" data-bs-dismiss="modal">Save Alterações</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="{{orderId}}ModalCloseOrder" tabindex="-1" [attr.aria-labelledby]="orderId+'ModalCloseLabel'" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h3 class="fs-5">Deseja fechar a mesa {{name}}?</h3>
+          <span>Criada em {{getCreatedAt()}}</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        @for(product of products; track product.id) {
+          <div class="container d-flex">
+            @if (product.weight) {
+              <span class="flex-grow-1 text-wrap">
+                {{product.name}} | {{product.weight}}G x {{product.qtd}} | R$ {{product.totalPrice?.toFixed(2)}}
+              </span>
+            } @else {
+              <span class="flex-grow-1 text-wrap">
+                {{product.name}} x {{product.qtd}} | R$ {{(product.price * product.qtd).toFixed(2)}}
+              </span>
+            }
+          </div>
+        }
+        <hr>
+        <h6 class="fs-5">Subtotal: R$ {{totalValue}}</h6>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="closeOder()" data-bs-dismiss="modal">Sim, fechar mesa.</button>
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Não</button>
       </div>
     </div>
   </div>
