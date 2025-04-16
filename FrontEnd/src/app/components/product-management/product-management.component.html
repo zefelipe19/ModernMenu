@@ -1,40 +1,40 @@
 <div class="card">
-    <div class="card-body">
+    <div class="card-body d-flex flex-column align-items-center">
         <h5 class="card-title">{{name}} | R$ {{price.toFixed(2)}} | {{type}}</h5>
         @if (!productEditable) {
-            <span>
-                <button class="btn btn-primary m-1" (click)="productEditibaleToggler()">Editar</button>
-            </span>
-            <span>
-                <button class="btn btn-danger" data-bs-toggle="modal" [attr.data-bs-target]="'#' + id + 'modal'">Deletar</button>
-            </span>
+            <div class="d-flex col-12 gap-2">
+                <button class="btn btn-primary col-8" (click)="productEditibaleToggler()">Editar</button>
+                <button class="btn btn-danger col-4" data-bs-toggle="modal" [attr.data-bs-target]="'#' + id + 'modal'">Deletar</button>
+            </div>
         } @else if (productEditable) {
-            <div class="d-flex flex-column gap-2 m-1 rounded">
-                <form class="form d-fex flex-column align-items-center" [formGroup]="saveProductForm">
-                    <div class="row p-2">
-                        <div class="col-12">
-                            <label class="form-label" for="productName">Nome</label>
-                            <input class="form-control" type="text" name="productName" id="productName" formControlName="name">
+            <div style="width: 85dvw;" class="d-flex justify-content-center align-items-center">
+                <div class="d-flex flex-column gap-2 m-1 w-100 rounded">
+                    <form class="form d-fex flex-column align-items-center" [formGroup]="saveProductForm">
+                        <div class="row p-2">
+                            <div class="col-12">
+                                <label class="form-label" for="productName">Nome</label>
+                                <input class="form-control" type="text" name="productName" id="productName" formControlName="name">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="productPrice">Valor</label>
+                                <input class="form-control" type="number" name="productPrice" id="productPrice" formControlName="price">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="productType">Tipo</label>
+                                <select class="form-control" name="productType" id="productType" formControlName="type">
+                                    <option value="UNI">Unidade</option>
+                                    <option value="KG">Quilo</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" for="productBarCode"> Código de Barras</label>
+                                <input class="form-control" type="number" name="productBarCode" id="productBarCode" formControlName="barCode">
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <label class="form-label" for="productPrice">Valor</label>
-                            <input class="form-control" type="number" name="productPrice" id="productPrice" formControlName="price">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label" for="productType">Tipo</label>
-                            <select class="form-control" name="productType" id="productType" formControlName="type">
-                                <option value="UNI">Unidade</option>
-                                <option value="KG">Quilo</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="productBarCode"> Código de Barras</label>
-                            <input class="form-control" type="number" name="productBarCode" id="productBarCode" formControlName="barCode">
-                        </div>
-                    </div>
-                    <input type="submit" class="btn btn-primary col-12" (click)="saveProduct(id); productEditibaleToggler()"  value="Salvar">
-                </form>
-                <input class="btn btn-danger col-12" type="button" name="cancel" id="cancel" value="Cancelar" (click)="productEditibaleToggler()">
+                        <input type="submit" class="btn btn-primary col-12" (click)="saveProduct(id); productEditibaleToggler()"  value="Salvar">
+                    </form>
+                    <input class="btn btn-danger col-12" type="button" name="cancel" id="cancel" value="Cancelar" (click)="productEditibaleToggler()">
+                </div>
             </div>
         }
     </div>

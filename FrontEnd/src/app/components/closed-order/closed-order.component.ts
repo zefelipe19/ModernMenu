@@ -18,4 +18,9 @@ export class ClosedOrderComponent implements OnInit {
   @Input({ alias: 'totalValue' }) totalValue: number = 0;
   @Input({ alias: 'createdAt' }) createdAt: string = '';
   @Input({ alias: 'closedAt' }) closedAt: string = '';
+
+  getClosedAt(): string {
+    const closedAt = new Date(this.closedAt);
+    return `${closedAt.toLocaleDateString()} às ${closedAt.toLocaleTimeString()}`;
+  }
 }

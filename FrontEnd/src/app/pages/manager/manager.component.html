@@ -4,26 +4,25 @@
     @if(!productsVisible) {    
         <button class="btn btn-info text-light" (click)="productsVisibleToggler()">Ver Produtos</button>
     }
-    <div class="d-flex flex-column align-items-center gap-2">
     @if (productsVisible) {
-            <button class="btn btn-info text-light col-12" (click)="productsVisibleToggler()">Esconder Produtos</button>
-        }
-        @if (productsVisible) {
-            
-            <h4 class="text-light">Todos os produtos</h4>
-            <div class="container p-2 d-flex flex-column gap-2">
-                @for (product of allProducts; track product.id) {
-                    <app-product-management 
-                    [id]="product.id" 
-                    [name]="product.name" 
-                    [price]="product.price"
-                    [type]="product.type"
-                    [barCode]="product.barCode"
-                    ></app-product-management>
-                }
+        <button class="btn btn-info text-light col-12" (click)="productsVisibleToggler()">Esconder Produtos</button>
+    }
+    @if (productsVisible) {
+            <div class="d-flex flex-column align-items-center gap-2">
+                <h4 class="text-light">Todos os produtos</h4>
+                <div class="d-flex flex-wrap gap-2">
+                    @for (product of allProducts; track product.id) {
+                        <app-product-management 
+                        [id]="product.id" 
+                        [name]="product.name" 
+                        [price]="product.price"
+                        [type]="product.type"
+                        [barCode]="product.barCode"
+                        class="flex-grow-1"></app-product-management>
+                    }
+                </div>
             </div>
         }
-    </div>
     
     @if(!ordersVisible) {    
         <button class="btn btn-success text-light" (click)="ordersVisibleToggler()">Ver Mesas</button>
@@ -50,15 +49,17 @@
     } 
     @if (closedOrdersVisible) {
         <button class="btn btn-warning" (click)="closedOrdersVisibleToggler()">Fechar</button>
-        @for (closedOrder of closedOrders; track closedOrder.id) {
-            <app-closed-order 
-            [id]="closedOrder.id" 
-            [name]="closedOrder.name" 
-            [products]="closedOrder.products" 
-            [totalValue]="closedOrder.totalValue" 
-            [createdAt]="closedOrder.createdAt" 
-            [closedAt]="closedOrder.closedAt"
-            class="text-light"></app-closed-order>
+        <div class="d-flex gap-2 col-12">
+            @for (closedOrder of closedOrders; track closedOrder.id) {
+                <app-closed-order 
+                [id]="closedOrder.id" 
+                [name]="closedOrder.name" 
+                [products]="closedOrder.products" 
+                [totalValue]="closedOrder.totalValue" 
+                [createdAt]="closedOrder.createdAt" 
+                [closedAt]="closedOrder.closedAt"
+                class="text-light flex-grow-1"></app-closed-order>
+            }
+        </div>
         }
-    }
 </div>

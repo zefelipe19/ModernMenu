@@ -1,1 +1,22 @@
-<p>closed-order works!</p>
+<button class="btn btn-outline-light col-12 mb-2" 
+data-bs-toggle="collapse" 
+aria-expanded="false" 
+[attr.data-bs-target]="'#'+id+'CollapseOrder'" 
+[attr.aria-controls]="id+'CollapseOrder'">{{name}} - {{getClosedAt()}}</button>
+
+<div class="collapse" id="{{id}}CollapseOrder">
+    <div class="card col-12">
+        <div class="card-header">
+            <h3 class="fs-5">{{name}}</h3>
+            <h4 class="fs-6">fechado em {{getClosedAt()}}</h4>
+        </div>
+        <div class="card-body">
+            @for (order of products; track order.id) {
+                <div>{{order.name}}, x {{order.qtd}}, R$ {{order.totalPrice}}</div>
+            }
+        </div>
+        <div class="card-footer">
+            R$ {{totalValue}}
+        </div>
+    </div>
+</div>

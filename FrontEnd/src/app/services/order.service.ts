@@ -12,7 +12,7 @@ import {
 export class OrderService {
   constructor() {}
 
-  orders = [
+  orders: OrderInterface[] = [
     {
       id: 1,
       name: 'Mesa 01',
@@ -26,6 +26,17 @@ export class OrderService {
       products: this.getProductsOrder(),
       totalValue: 0,
       createdAt: '2025-04-15T15:15:48.687Z',
+    },
+  ];
+
+  closedOrders: ClosedOrderInterface[] = [
+    {
+      id: 1,
+      name: 'Mesa 01',
+      products: this.getProductsOrder(),
+      totalValue: 0,
+      createdAt: '2025-04-14T15:15:48.687Z',
+      closedAt: '2025-04-14T15:20:48.687Z',
     },
   ];
 
@@ -65,9 +76,13 @@ export class OrderService {
   getClosedOrders(): ClosedOrderInterface[] {
     if (localStorage.getItem('closedOrders')) {
       const closedOrders = JSON.parse(localStorage.getItem('closedOrders')!);
-      console.log(closedOrders);
-      return closedOrders;
+      closedOrders.sort((a: ClosedOrderInterface, b: ClosedOrderInterface) => {
+        return new Date(b.closedAt).getTime() - new Date(a.closedAt).getTime();
+      });
+      return (this.closedOrders = closedOrders);
+    } else {
+      localStorage.setItem('closedOrders', JSON.stringify(this.closedOrders));
     }
-    return [];
+    return this.closedOrders;
   }
 }

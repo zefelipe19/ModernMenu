@@ -37,6 +37,12 @@ export interface NewOrderInterface {
   createdAt: string;
 }
 
+interface PaymentMethods {
+  type: string;
+  value: number;
+}
+
 export interface ClosedOrderInterface extends OrderInterface {
   closedAt: string;
+  payment?: PaymentMethods[];
 }
